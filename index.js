@@ -6,10 +6,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const API1_URL = "http://api.apnabazarapp.in/WebAPI/V2/get_outstanding.php";
+const DUES_API_URL = "http://api.apnabazarapp.in/WebAPI/V2/get_outstanding.php";
 const LEDGER_API_URL = "http://api.apnabazarapp.in/WebAPI/V2/get_account_ledger.php"; // Ledger API
 
-// ✅ Proxy route to fetch dues from both APIs
+// ✅ Proxy route to fetch dues
 app.post("/fetchDues", async (req, res) => {
   try {
     const requestData = {
@@ -17,23 +17,12 @@ app.post("/fetchDues", async (req, res) => {
       Password: "12345678",
     };
 
-    // Call both APIs in parallel
-    const [response1, response2] = await Promise.all([
-      axios.post(API1_URL, requestData, {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      }),
-      axios.post(API2_URL, requestData, {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      }),
-    ]);
+    // Call the dues API
+    const response = await axios.post(DUES_API_URL, requestData, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
 
-    // Merge both responses
-    const mergedData = {
-      statuscode: 200,
-      result: [...(response1.data.result || []), ...(response2.data.result || [])],
-    };
-
-    res.json(mergedData);
+    res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
