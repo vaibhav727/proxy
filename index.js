@@ -10,7 +10,7 @@ const DUES_API_URL = "http://api.apnabazarapp.in/WebAPI/V2/get_outstanding.php";
 const LEDGER_API_URL = "http://api.apnabazarapp.in/WebAPI/V2/get_account_ledger.php"; // Ledger API
 const VOUCHER_API_URL = "http://api.apnabazarapp.in/WebAPI/V2/add_accountingvoucher.php";
 const INVENTORY_VOUCHER_API_URL = "http://api.apnabazarapp.in/WebAPI/V2/add_inventoryvoucher.php"; // ✅ Inventory Voucher API
-
+const FETCHMASTERDATA = "http://api.apnabazarapp.in/WebAPI/V2/get_accounts.php";
 
 // ✅ Proxy route to fetch dues
 app.post("/fetchDues", async (req, res) => {
@@ -22,6 +22,24 @@ app.post("/fetchDues", async (req, res) => {
 
     // Call the dues API
     const response = await axios.post(DUES_API_URL, requestData, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/fetchMasterData", async (req, res) => {
+  try {
+    const requestData = {
+      Username: "9507388931",
+      Password: "12345678",
+    };
+
+    // Call the dues API
+    const response = await axios.post(FETCHMASTERDATA, requestData, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
     });
 
