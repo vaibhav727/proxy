@@ -52,14 +52,14 @@ app.post("/fetchMasterData", async (req, res) => {
 // ✅ Proxy route to fetch ledger data
 app.post("/fetchLedger", async (req, res) => {
   try {
-    const { ERP_Code, Start_date, End_date, Pdc } = req.body;
+    const { ERP_Alias, Start_date, End_date, Pdc } = req.body;
 
     const response = await axios.post(
       LEDGER_API_URL,
       new URLSearchParams({
         Username: "9507388931",
       Password: "12345678",
-        ERP_Code,
+        ERP_Alias,
         Start_date,
         End_date,
         Pdc: Pdc || "Y", // Default to "Y" if not provided
