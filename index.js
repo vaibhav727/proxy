@@ -136,7 +136,7 @@ app.post("/addInventoryVoucher", async (req, res) => {
       Station,
       Grdate,
       Grno,
-      JSON.stringify(Item_data),
+      Item_data: JSON.stringify(Item_data),
     });
 
     const response = await axios.post(INVENTORY_VOUCHER_API_URL, requestData, {
